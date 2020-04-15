@@ -3,7 +3,6 @@ FROM python:3-slim
 COPY ./my-rokus.txt /usr/src/app/
 COPY ./roku-apps.xml /usr/src/app/
 COPY ./roku-remote-rest-server.py /usr/src/app/
-COPY ./certs /usr/src/app/
 
 RUN chmod +x /usr/src/app/roku-remote-rest-server.py
 
