@@ -83,7 +83,7 @@ class Roku_Finder(object):
             pickle.dump(my_rokus, myFile)
 
         # write the apps list xml to a file for use by the roku_trigger script
-        with open("roku-apps.xml", "w") as myFile:
+        with open("roku-apps.xml", "wb") as myFile:
             myFile.write(str(my_apps_xml))
  
         print('Saving the following Rokus and the apps installed on them')
