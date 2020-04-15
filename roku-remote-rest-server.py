@@ -213,16 +213,16 @@ try:
     #import dict of rokus
     my_rokus = {}
     try:
-        with open(LOCALPATH + 'my_rokus.txt', 'rb') as myFile:
+        with open(LOCALPATH + 'my-rokus.txt', 'rb') as myFile:
             my_rokus = pickle.load(myFile)
     except:
-        logger.error("Exception opening my_rokus.txt: %s", sys.exc_info()[0])
+        logger.error("Exception opening my-rokus.txt: %s", sys.exc_info()[0])
 
     try:
         #Import apps and their IDs
-        my_apps_tree = ET.parse(LOCALPATH + 'roku_apps.xml')
+        my_apps_tree = ET.parse(LOCALPATH + 'roku-apps.xml')
     except:
-        logger.error("Exception opening roku_apps.xml: %s", sys.exc_info()[0])
+        logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
     httpd.serve_forever()
 
