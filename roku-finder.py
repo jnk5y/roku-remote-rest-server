@@ -1,9 +1,10 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 
 import logging
 import time
 import pickle
-import urllib2
+import urllib.request, urllib.error, urllib.parse
+from lxml import etree
 import xml.etree.ElementTree as ET
 from parse import *
 from lxml import etree
@@ -44,18 +45,19 @@ class Roku_Finder(object):
             url = baseurl + '/query/device-info'
             print(url)
             try:
-                response = urllib2.urlopen(str(url))
+                response = urllib.request.urlopen(str(url))
                 content = response.read()
-            except urllib2.HTTPError, e:
-                print('HTTPError = ' + str(e.code))
+            except urllib.error.HTTPError as e:
+                print(('HTTPError = ' + str(e.code)))
                 continue
-            except urllib2.URLError, e:
-                print('URLError = ' + str(e.reason))
+            except urllib.error.URLError as e:
+                print(('URLError = ' + str(e.reason)))
                 continue
-            except httplib.HTTPException, e:
+            except httplib.HTTPException as e:
                 print('HTTPException')
                 continue
-                
+
+
             # find the names of the rokus
             device_tree = etree.XML(content)
             device_name = device_tree.find('user-device-name')
@@ -64,25 +66,25 @@ class Roku_Finder(object):
             # find the apps installed on the first roku found
             if my_apps_xml == '':
                 try:
-                    response = urllib2.urlopen(baseurl + '/query/apps')
+                    response = urllib.request.urlopen(baseurl + '/query/apps')
                     my_apps_xml = response.read()
-                except urllib2.HTTPError, e:
-                    print('HTTPError = ' + str(e.code))
+                except urllib.error.HTTPError as e:
+                    print(('HTTPError = ' + str(e.code)))
                     continue
-                except urllib2.URLError, e:
-                    print('URLError = ' + str(e.reason))
+                except urllib.error.URLError as e:
+                    print(('URLError = ' + str(e.reason)))
                     continue
-                except httplib.HTTPException, e:
+                except httplib.HTTPException as e:
                     print('HTTPException')
                     continue
 
         # write the rokus to a file for use by the roku_trigger script
         with open("my_rokus.txt", "wb") as myFile:
-            pickle.dump(my-rokus, myFile)
+            pickle.dump(my_rokus, myFile)
 
         # write the apps list xml to a file for use by the roku_trigger script
         with open("roku_apps.xml", "w") as myFile:
-            myFile.write(my-apps_xml)
+            myFile.write(str(my_apps_xml))
  
         print('Saving the following Rokus and the apps installed on them')
         print(my_rokus)
