@@ -1,3 +1,5 @@
+#!/usr/bin/env python2
+
 import logging
 import time
 import pickle
