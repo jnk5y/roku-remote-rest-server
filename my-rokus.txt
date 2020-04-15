@@ -3,7 +3,7 @@ S'Bedroom Roku'
 p1
 S'http://192.168.86.11:8060'
 p2
-sS'Den Roku'
+sS'Downstairs Roku'
 p3
 S'http://192.168.86.13:8060'
 p4
@@ -13,6 +13,4 @@ S'http://192.168.86.12:8060'
 p6
 sS'Downstairs Roku'
 p7
-S'http://192.168.86.13:8060'
-p8
 s.
