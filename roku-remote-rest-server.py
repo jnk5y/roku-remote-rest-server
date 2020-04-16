@@ -193,26 +193,16 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             pass
 
 try:
-    CERTFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/fullchain.pem"
-    KEYFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/privkey.pem"
-
-    httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
-    httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
-    sa = httpd.socket.getsockname()
-
     # Banner
     logger.info("==========================================================")
-    logger.info("Python REST Server")
-    logger.info("Serving HTTPS on port %d", sa[1])
 
     ##############################################################################
     # Initiate roku information
     ##############################################################################
-    logger.info("Listening for roku commands")
-    
-    #import dict of rokus
     my_rokus = {}
     try:
+        #import dict of rokus
+        logger.info("Reading roku list")
         with open(LOCALPATH + 'my-rokus.txt', 'rb') as myFile:
             my_rokus = pickle.load(myFile)
     except:
@@ -220,10 +210,22 @@ try:
 
     try:
         #Import apps and their IDs
+        logger.info("Reading roku apps list")
         my_apps_tree = ET.parse(LOCALPATH + 'roku-apps.xml')
     except:
         logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
+    CERTFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/fullchain.pem"
+    KEYFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/privkey.pem"
+
+    httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
+    httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
+    sa = httpd.socket.getsockname()
+
+    logger.info("Python REST Server")
+    logger.info("Serving HTTPS on port %d", sa[1])
+    logger.info("Listening for roku commands")
+    
     httpd.serve_forever()
 
 except:

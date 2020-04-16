@@ -84,7 +84,7 @@ class Roku_Finder(object):
 
         # write the apps list xml to a file for use by the roku_trigger script
         with open("roku-apps.xml", "wb") as myFile:
-            myFile.write(str(my_apps_xml))
+            myFile.write(my_apps_xml)
  
         print('Saving the following Rokus and the apps installed on them')
         print(my_rokus)

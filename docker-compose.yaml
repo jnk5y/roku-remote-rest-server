@@ -9,7 +9,7 @@ secrets:
 services:
   roku-remote:
     container_name: roku-remote
-    image: roku-rest-server-image
+    image: roku-remote-rest-server
     deploy:
       replicas: 1
     secrets:
