@@ -3,9 +3,6 @@
 
 Authors: John Kyrus
 
-Description: Python rest server to that gets commands from google assistant through ifttt
-    which then sends commands to local rokus. Can give basic remote commands strung together 
-    ex. roku bedroom [roku box name] left up left select [commands]
 """
 
 ##############################################################################

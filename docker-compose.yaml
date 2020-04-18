@@ -9,7 +9,7 @@ secrets:
 services:
   roku-remote:
     container_name: roku-remote
-    image: roku-remote-rest-server
+    image: roku-remote-rest-server:latest
     deploy:
       replicas: 1
     secrets:
@@ -21,9 +21,9 @@ services:
       TZ: 'America/New_York'
     volumes:
       - '/etc/letsencrypt/:/usr/src/app/certs/:z'
-    healthcheck:
-      test: curl --fail -k -s https://localhost:8889/roku/health || exit 1
-      interval: 1m
-      timeout: 10s
-      retries: 2
+#    healthcheck:
+#      test: curl --fail -k -s https://localhost:8889/roku/health || exit 1
+#      interval: 1m
+#      timeout: 10s
+#      retries: 2
     restart: unless-stopped
