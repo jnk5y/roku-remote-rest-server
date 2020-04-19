@@ -54,48 +54,51 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
     trigger = ''
     triggered = False
     url = ''
-    
-    whichRoku = action.split('%20')
+    action.lstrip()
+    commandList = action.split('%20')
+    logger.info(commandList)
     for roku in my_rokus:
-        if whichRoku[0] in roku.lower():
-            rokuName = roku
-            # Remove the roku name from the argument
-            action = action.replace(whichRoku[0],'')
-            action = action.lstrip()
-    
+        if len(commandList) > 1:
+            if commandList[0] in roku.lower():
+                rokuName = roku
+                commandList.pop(0)
+
     if rokuName != '':
-        if 'search' in action:
+        if 'search' == commandList[0] and len(commandList) > 1:
             triggerType = 'search'
-            action = action.replace('search','')
-            action = action.lstrip()
-            action = action.replace(' ','%20')
-            trigger = 'browse?' + action
-            triggered = True
-        elif 'open' in action or 'launch' in action:
-            triggerType = 'launch'
-            action = action.replace('launch','')
-            action = action.replace('open','')
-            action = action.lstrip()
-            for app in my_apps_tree.findall('app'):
-                if action in app.text.lower():
-                    trigger = app.get('id')
-            triggered = True
-        elif 'volume' in action:
-            triggerType = 'keypress'
-            action = action.replace('volume','')
-            action = action.lstrip()
-            commandList = action.split(' ')
+            trigger = 'browse?'
+            commandList.pop(0)
             for command in commandList:
-                triggered = False
+                trigger = trigger + command + ' '
+            triggered = True
+        elif ('open' == commandList[0] or 'launch' == commandList[0]) and len(commandList) > 1:
+            for app in my_apps_tree.findall('app'):
+                if commandList[1] in app.text.lower():
+                    triggerType = 'launch'
+                    trigger = app.get('id')
+                    triggered = True
+        elif 'volume' == commandList[0] and len(commandList) > 1:
+            triggerType = 'keypress'
+            commandList.pop(0)
+            for command in commandList:
                 if command == 'up':
                     trigger = 'volumeup'
                     triggered = True
                 elif command == 'down':
                     trigger = 'volumedown'
                     triggered = True
+                
+                if triggered:
+                    url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
+                    try:
+                        requests.post(url, timeout=5)
+                    except requests.RequestException as e:
+                        logger.error(e)
+                    logger.info(url)
+                    triggered = False
+                    time.sleep(1)
         else:
             triggerType = 'keypress'
-            commandList = action.split('%20')
             for command in commandList:
                 logging.info("Command %s", command)
                 if command == 'home' or command == 'select' or \
@@ -130,7 +133,7 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
         if triggered:
             url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
             try:
-                requests.post(url, timeout=2)
+                requests.post(url, timeout=5)
             except requests.RequestException as e:
                 logger.error(e)
             logger.info(url)
