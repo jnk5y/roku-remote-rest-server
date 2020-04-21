@@ -32,21 +32,14 @@ LOCALPATH = '/usr/src/app/'
 
 def read_secrets():
     try:
-        # Read secret files
-        logger.info("Reading secret files")
-
-        f = open('/run/secrets/username', "r")
-        username = f.readline().strip()
-        f.close()
-
-        f = open('/run/secrets/password', "r")
-        password = f.readline().strip()
+        f = open('/run/secrets/AUTHKEY', "r")
+        AUTHKEY = f.readline().strip()
         f.close()
     except:
         logger.error("Exception reading secrets files: %s", sys.exc_info()[0])
         sys.exit(0)
 
-    return username, password
+    return AUTHKEY
 
 def roku_listener(logger, action, my_rokus, my_apps_tree):
     rokuName = ''
@@ -163,34 +156,29 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         response = ''
         
         if trigger == 'roku' and action == 'health':
-            self.send_response(200)
-            self.send_header('Content-Type', 'text/plain');
-            self.end_headers()
-            response = 'healthy'
-            self.wfile.write(response.encode())
+#            self.send_response(200)
+#            self.send_header('Content-Type', 'text/plain');
+#            self.end_headers()
+#            response = 'healthy'
+#            self.wfile.write(response.encode())
             pass
         else:
-            username, password = read_secrets()
+            AUTHKEY = read_secrets()
 
-            if( username == '' or password == ''):
-                logger.error('no username or password')
+            if AUTHKEY == '':
+                logger.error('Empty Authentication')
                 sys.exit(0)
-        
-            authentication = username + ':' + password
-            key = base64.b64encode(authentication.encode())
-        
-            if self.headers.get('Authorization') == 'Basic '+ str(key,'utf-8'):
-                if trigger == 'roku':
-                    response = roku_listener(logger, action, my_rokus, my_apps_tree)
-
-                self.send_response(200)
-                self.send_header('Content-Type', 'text/plain');
-                self.end_headers()
-                self.wfile.write(response.encode())
-                pass
             else:
-                pass
-            pass
+                if self.headers.get('Authorization') == ('Basic '+ AUTHKEY):
+                    if trigger == 'roku':
+                        response = roku_listener(logger, action, my_rokus, my_apps_tree)
+
+                    self.send_response(200)
+                    self.send_header('Content-Type', 'text/plain');
+                    self.end_headers()
+                    self.wfile.write(response.encode())
+                else:
+                    logger.error("Not Authorized")
 
 try:
     # Banner

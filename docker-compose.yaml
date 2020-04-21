@@ -1,9 +1,7 @@
 version: "3.7"
 
 secrets:
-  username:
-    external: true
-  password:
+  AUTHKEY:
     external: true
 
 services:
@@ -13,8 +11,7 @@ services:
     deploy:
       replicas: 1
     secrets:
-      - username
-      - password
+      - AUTHKEY
     ports:
       - "8889:8889/tcp"
     environment:
