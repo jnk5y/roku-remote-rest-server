@@ -84,12 +84,11 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                 if triggered:
                     url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
                     try:
-                        requests.post(url, timeout=5)
+                        requests.post(url, timeout=10)
                     except requests.RequestException as e:
                         logger.error(e)
                     logger.info(url)
                     triggered = False
-                    time.sleep(1)
         else:
             triggerType = 'keypress'
             for command in commandList:
@@ -126,7 +125,7 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
         if triggered:
             url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
             try:
-                requests.post(url, timeout=5)
+                requests.post(url, timeout=10)
             except requests.RequestException as e:
                 logger.error(e)
             logger.info(url)
