@@ -1,7 +1,8 @@
 FROM alpine:3
 
-RUN apk add --no-cache py3-pip libxml2-dev libxslt-dev python-dev && \
-	pip3 install --no-cache-dir requests httplib2 parse lxml
+RUN apk add --no-cache --virtual py3-pip libxml2-dev libxslt-dev gcc && \
+	pip3 install --no-cache-dir requests httplib2 parse lxml && \
+	apk del .build-deps
 
 COPY ./my-rokus.txt /usr/src/app/
 COPY ./roku-apps.xml /usr/src/app/
