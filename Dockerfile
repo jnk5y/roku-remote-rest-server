@@ -1,8 +1,7 @@
-FROM python:3-slim
+FROM alpine:3
 
-RUN apt-get update && apt-get install -y \
-	python3-pip curl && \
-	pip install --no-cache-dir requests httplib2 parse lxml
+RUN apk add --no-cache py3-pip && \
+	pip3 install --no-cache-dir requests httplib2 parse lxml
 
 COPY ./my-rokus.txt /usr/src/app/
 COPY ./roku-apps.xml /usr/src/app/
