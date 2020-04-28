@@ -11,9 +11,8 @@ Two python scripts.
     * FIREWALLS WILL BLOCK THE DISCOVER SCRIPT
   * `roku-remote-rest-server.py` takes https requests to control a listed roku device.
 
-You must create 2 docker secrets, username and password, before running.
- * `printf "place-your-username-here" | docker secret create username -`
- * `printf "place-your-password-here" | docker secret create password -`
+You must create a docker secret, AUTHKEY, before running. AUTHKEY is your username:password base64 encrypted
+ * `printf "place-your-AUTHKEY-here" | docker secret create AUTHKEY -`
  
 To build the container image from the main folder
  * `docker build . -t roku-remote-rest-server`
