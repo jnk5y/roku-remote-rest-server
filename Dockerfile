@@ -11,4 +11,4 @@ RUN chmod +x /usr/src/app/roku-remote-rest-server.py
 
 EXPOSE 8889
 
-CMD [ "python", "/usr/src/app/roku-remote-rest-server.py"]
+CMD [ "python3", "/usr/src/app/roku-remote-rest-server.py"]
