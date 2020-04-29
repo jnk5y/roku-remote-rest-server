@@ -41,6 +41,16 @@ def read_secrets():
 
     return AUTHKEY
 
+def write_tz():
+    try:
+        f = open('/etc/timezone',"w")
+        f.write(os.getenv('TZ', 'US/Eastern'))
+        f.close()
+    except:
+        logger.error("Exception writing timezone to file: %s", sys.exc_info()[0])
+
+    return
+
 def roku_listener(logger, action, my_rokus, my_apps_tree):
     rokuName = ''
     triggerType = ''
@@ -208,6 +218,8 @@ try:
     httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
     sa = httpd.socket.getsockname()
+
+    write_tz()
 
     logger.info("Python REST Server")
     logger.info("Serving HTTPS on port %d", sa[1])

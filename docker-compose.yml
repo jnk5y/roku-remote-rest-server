@@ -14,7 +14,7 @@ services:
     ports:
       - "8889:8889/tcp"
     environment:
-      TZ: 'America/New_York'
+      TZ: 'US/Eastern'
     volumes:
       - '/etc/letsencrypt/:/usr/src/app/certs/:z'
 #    healthcheck:

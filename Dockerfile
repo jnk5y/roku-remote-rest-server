@@ -1,6 +1,6 @@
 FROM alpine:3
 
-RUN apk add --no-cache py3-pip libxml2-dev libxslt-dev gcc musl-dev python3-dev && \
+RUN apk add --no-cache py3-pip tzdata libxml2-dev libxslt-dev gcc musl-dev python3-dev && \
 	pip3 install --no-cache-dir requests httplib2 parse lxml
 
 COPY ./my-rokus.txt /usr/src/app/
