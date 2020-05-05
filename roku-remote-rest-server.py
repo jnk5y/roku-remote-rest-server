@@ -217,7 +217,7 @@ try:
     CERTFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/fullchain.pem"
     KEYFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/privkey.pem"
 
-    httpd = ThreadingHTTPServer(('', 8889), SimpleHTTPRequestHandler)
+    httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
     sa = httpd.socket.getsockname()
 
