@@ -5,7 +5,7 @@ secrets:
     external: true
 
 services:
-  roku-remote:
+  app:
     image: jnk5y/roku-remote-rest-server
     deploy:
       replicas: 1

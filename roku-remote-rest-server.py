@@ -59,7 +59,6 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
     url = ''
     action.lstrip()
     commandList = action.split('%20')
-    logger.info(commandList)
     for roku in my_rokus:
         if len(commandList) > 1:
             if commandList[0] in roku.lower():
@@ -160,35 +159,38 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split('?_=',1)[0]
         path = path.split('/')
-        trigger = path[1].lower()
-        action = path[2].lower()
-        response = ''
         
-        if trigger == 'roku' and action == 'health':
-#            self.send_response(200)
-#            self.send_header('Content-Type', 'text/plain');
-#            self.end_headers()
-#            response = 'healthy'
-#            self.wfile.write(response.encode())
-            pass
-        else:
-            AUTHKEY = read_secrets()
-
-            if AUTHKEY == '':
-                logger.error('Empty Authentication')
-                sys.exit(0)
+        if len(path) > 1:
+            trigger = path[1].lower()
+            action = path[2].lower()
+            response = ''
+        
+            if trigger == 'roku' and action == 'health':
+#                self.send_response(200)
+#                self.send_header('Content-Type', 'text/plain');
+#                self.end_headers()
+#                response = 'healthy'
+#                self.wfile.write(response.encode())
+                pass
             else:
-                if self.headers.get('Authorization') == ('Basic '+ AUTHKEY):
-                    if trigger == 'roku':
-                        response = roku_listener(logger, action, my_rokus, my_apps_tree)
+                AUTHKEY = read_secrets()
 
-                    self.send_response(200)
-                    self.send_header('Content-Type', 'text/plain');
-                    self.end_headers()
-                    self.wfile.write(response.encode())
+                if AUTHKEY == '':
+                    logger.error('Empty Authentication Key Environment Variable')
+                    sys.exit(0)
                 else:
-                    logger.error("Not Authorized")
+                    if self.headers.get('Authorization') == ('Basic '+ AUTHKEY):
+                        if trigger == 'roku':
+                            response = roku_listener(logger, action, my_rokus, my_apps_tree)
 
+                        self.send_response(200)
+                        self.send_header('Content-Type', 'text/plain');
+                        self.end_headers()
+                        self.wfile.write(response.encode())
+                    else:
+                        logger.error("Not Authorized")
+        else:
+            logger.error('Bad Path')
 try:
     # Banner
     logger.info("==========================================================")
@@ -215,7 +217,7 @@ try:
     CERTFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/fullchain.pem"
     KEYFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/privkey.pem"
 
-    httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
+    httpd = ThreadingHTTPServer(('', 8889), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
     sa = httpd.socket.getsockname()
 
