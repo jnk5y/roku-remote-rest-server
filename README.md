@@ -13,6 +13,8 @@ Two python scripts.
 
 You must create a docker secret, AUTHKEY, before running. AUTHKEY is your username:password base64 encrypted
  * `printf "place-your-AUTHKEY-here" | docker secret create AUTHKEY -`
+
+The script needs a certfile (fullchain.pem) and a keyfile (privkey.pem) to secure the socket. I use letsencrypt and create a volume to the certs folder and I use an ENV variable CERTPATH to provide the remaining path.
  
 To build the container image from the main folder
  * `docker build . -t roku-remote-rest-server`

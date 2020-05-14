@@ -37,7 +37,6 @@ def read_secrets():
         f.close()
     except:
         logger.error("Exception reading secrets files: %s", sys.exc_info()[0])
-        sys.exit(0)
 
     return AUTHKEY
 
@@ -227,8 +226,8 @@ try:
     except:
         logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
-    CERTFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "/fullchain.pem"
-    KEYFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "/privkey.pem"
+    CERTFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "fullchain.pem"
+    KEYFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "privkey.pem"
 
     if not os.path.isfile(CERTFILE):
         logger.error("Certfile not found: %s", sys.exc_info()[0])
@@ -238,7 +237,6 @@ try:
         logger.error("Keyfile not found: %s", sys.exc_info()[0])
         sys.exit(0)
     
-
     httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE, certfile=CERTFILE, server_side=True)
     sa = httpd.socket.getsockname()
@@ -256,6 +254,7 @@ except:
 
 finally:
     logger.error("Exiting Python REST Server")
+    
     exc_type, exc_value, exc_traceback = sys.exc_info()
     traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
     sys.exit(0)
