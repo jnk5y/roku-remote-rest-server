@@ -14,9 +14,10 @@ services:
     ports:
       - "8889:8889/tcp"
     environment:
-      TZ: 'US/Eastern'
+      - TZ: 'US/Eastern'
+      - CERTPATH: 'live/server.kyrus.xyz'
     volumes:
-      - '/etc/letsencrypt/live/server.kyrus.xyz/:/usr/src/app/certs/:Z'
+      - '/etc/letsencrypt/:/usr/src/app/certs/:z'
 #    healthcheck:
 #      test: curl --fail -k -s https://localhost:8889/roku/health || exit 1
 #      interval: 1m

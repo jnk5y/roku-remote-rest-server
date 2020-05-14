@@ -227,8 +227,8 @@ try:
     except:
         logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
-    CERTFILE = LOCALPATH + "certs/fullchain.pem"
-    KEYFILE = LOCALPATH + "certs/privkey.pem"
+    CERTFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "/fullchain.pem"
+    KEYFILE = LOCALPATH + "certs/" + os.environ.get('CERTPATH') + "/privkey.pem"
 
     if not os.path.isfile(CERTFILE):
         logger.error("Certfile not found: %s", sys.exc_info()[0])
