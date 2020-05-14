@@ -79,8 +79,10 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                     triggerType = 'launch'
                     trigger = app.get('id')
                     triggered = True
-        elif 'volume' == commandList[0] and len(commandList) > 1:
+        elif ('off' == commandList[0] or 'power' == commandList[0]):
             triggerType = 'keypress'
+            trigger = 'PowerOff'
+        elif 'volume' == commandList[0] and len(commandList) > 1:
             commandList.pop(0)
             for command in commandList:
                 if command == 'up':
@@ -91,12 +93,22 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                     triggered = True
                 
                 if triggered:
-                    url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
+                    url = my_rokus[rokuName] + '/keydown/' + trigger
                     try:
                         requests.post(url, timeout=10)
                     except requests.RequestException as e:
                         logger.error(e)
                     logger.info(url)
+                    
+                    time.sleep(3)
+
+                    url = my_rokus[rokuName] + '/keyup/' + trigger
+                    try:
+                        requests.post(url, timeout=10)
+                    except requests.RequestException as e:
+                        logger.error(e)
+                    logger.info(url)
+                    
                     triggered = False
         else:
             triggerType = 'keypress'
@@ -214,8 +226,8 @@ try:
     except:
         logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
-    CERTFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/fullchain.pem"
-    KEYFILE_PATH = LOCALPATH + "certs/live/server.kyrus.xyz/privkey.pem"
+    CERTFILE_PATH = LOCALPATH + "certs/fullchain.pem"
+    KEYFILE_PATH = LOCALPATH + "certs/privkey.pem"
 
     httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
     httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
