@@ -230,11 +230,11 @@ try:
     CERTFILE = LOCALPATH + "certs/fullchain.pem"
     KEYFILE = LOCALPATH + "certs/privkey.pem"
 
-    if !os.path.isfile(CERTFILE):
+    if not os.path.isfile(CERTFILE):
         logger.error("Certfile not found: %s", sys.exc_info()[0])
         sys.exit(0)
         
-    if !os.path.isfile(KEYFILE):
+    if not os.path.isfile(KEYFILE):
         logger.error("Keyfile not found: %s", sys.exc_info()[0])
         sys.exit(0)
     
