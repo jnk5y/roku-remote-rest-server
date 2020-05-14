@@ -218,6 +218,7 @@ try:
             my_rokus = pickle.load(myFile)
     except:
         logger.error("Exception opening my-rokus.txt: %s", sys.exc_info()[0])
+        sys.exit(0)
 
     try:
         #Import apps and their IDs
@@ -226,11 +227,20 @@ try:
     except:
         logger.error("Exception opening roku-apps.xml: %s", sys.exc_info()[0])
 
-    CERTFILE_PATH = LOCALPATH + "certs/fullchain.pem"
-    KEYFILE_PATH = LOCALPATH + "certs/privkey.pem"
+    CERTFILE = LOCALPATH + "certs/fullchain.pem"
+    KEYFILE = LOCALPATH + "certs/privkey.pem"
+
+    if !os.path.isfile(CERTFILE):
+        logger.error("Certfile not found: %s", sys.exc_info()[0])
+        sys.exit(0)
+        
+    if !os.path.isfile(KEYFILE):
+        logger.error("Keyfile not found: %s", sys.exc_info()[0])
+        sys.exit(0)
+    
 
     httpd = HTTPServer(('', 8889), SimpleHTTPRequestHandler)
-    httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE_PATH, certfile=CERTFILE_PATH, server_side=True)
+    httpd.socket = ssl.wrap_socket (httpd.socket, keyfile=KEYFILE, certfile=CERTFILE, server_side=True)
     sa = httpd.socket.getsockname()
 
     write_tz()
