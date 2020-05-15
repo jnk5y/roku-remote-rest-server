@@ -99,8 +99,6 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                         logger.error(e)
                     logger.info(url)
                     
-                    time.sleep(.5)
-
                     url = my_rokus[rokuName] + '/keyup/' + trigger
                     try:
                         requests.post(url, timeout=10)
