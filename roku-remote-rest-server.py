@@ -83,6 +83,7 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
             trigger = 'PowerOff'
         elif 'volume' == commandList[0] and len(commandList) > 1:
             commandList.pop(0)
+            triggerType = 'keypress'
             for command in commandList:
                 if command == 'up':
                     trigger = 'volumeup'
@@ -90,16 +91,12 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                 elif command == 'down':
                     trigger = 'volumedown'
                     triggered = True
+                elif command == 'mute':
+                    trigger = 'volumemute'
+                    triggered = True
                 
                 if triggered:
-                    url = my_rokus[rokuName] + '/keydown/' + trigger
-                    try:
-                        requests.post(url, timeout=10)
-                    except requests.RequestException as e:
-                        logger.error(e)
-                    logger.info(url)
-                    
-                    url = my_rokus[rokuName] + '/keyup/' + trigger
+                    url = my_rokus[rokuName] + '/' + triggerType + '/' + trigger
                     try:
                         requests.post(url, timeout=10)
                     except requests.RequestException as e:
