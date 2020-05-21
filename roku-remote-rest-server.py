@@ -81,6 +81,7 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
         elif ('off' == commandList[0] or 'power' == commandList[0]):
             triggerType = 'keypress'
             trigger = 'PowerOff'
+            triggered = True
         elif 'volume' == commandList[0] and len(commandList) > 1:
             commandList.pop(0)
             triggerType = 'keypress'
