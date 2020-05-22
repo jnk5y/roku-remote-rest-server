@@ -78,10 +78,6 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                     triggerType = 'launch'
                     trigger = app.get('id')
                     triggered = True
-        elif ('off' == commandList[0] or 'power' == commandList[0]):
-            triggerType = 'keypress'
-            trigger = 'PowerOff'
-            triggered = True
         elif 'volume' == commandList[0] and len(commandList) > 1:
             commandList.pop(0)
             triggerType = 'keypress'
@@ -126,6 +122,9 @@ def roku_listener(logger, action, my_rokus, my_apps_tree):
                     triggered = True
                 elif command == 'replay':
                     trigger = 'instantreplay'
+                    triggered = True
+                elif command == 'power' or command == 'off':
+                    trigger = 'PowerOff'
                     triggered = True
 
                 if triggered:
