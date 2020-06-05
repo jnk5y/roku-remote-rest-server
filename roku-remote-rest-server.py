@@ -166,7 +166,7 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
         path = self.path.split('?_=',1)[0]
         path = path.split('/')
         
-        if len(path) > 1:
+        if len(path) > 2:
             trigger = path[1].lower()
             action = path[2].lower()
             response = ''
