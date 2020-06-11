@@ -172,11 +172,11 @@ class SimpleHTTPRequestHandler(BaseHTTPRequestHandler):
             response = ''
         
             if trigger == 'roku' and action == 'health':
-#                self.send_response(200)
-#                self.send_header('Content-Type', 'text/plain');
-#                self.end_headers()
-#                response = 'healthy'
-#                self.wfile.write(response.encode())
+                self.send_response(200)
+                self.send_header('Content-Type', 'text/plain');
+                self.end_headers()
+                response = 'healthy'
+                self.wfile.write(response.encode())
                 pass
             else:
                 AUTHKEY = read_secrets()

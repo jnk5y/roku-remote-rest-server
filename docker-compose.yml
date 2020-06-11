@@ -18,9 +18,9 @@ services:
       CERTPATH: 'live/server.kyrus.xyz/'
     volumes:
       - '/etc/letsencrypt/:/usr/src/app/certs/:z'
-#    healthcheck:
-#      test: curl --fail -k -s https://localhost:8889/roku/health || exit 1
-#      interval: 1m
-#      timeout: 10s
-#      retries: 2
+    healthcheck:
+      test: curl --fail -k -s https://server.kyrus.xyz:8889/roku/health || exit 1
+      interval: 1m
+      timeout: 10s
+      retries: 2
     restart: unless-stopped
