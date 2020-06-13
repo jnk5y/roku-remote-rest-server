@@ -16,11 +16,10 @@ services:
     environment:
       TZ: 'US/Eastern'
       CERTPATH: 'live/server.kyrus.xyz/'
-      HEALTHCHECK_URL: 'https://server.kyrus.xyz:8889/roku/health'
     volumes:
       - '/etc/letsencrypt/:/usr/src/app/certs/:z'
     healthcheck:
-      test: python3 /usr/src/app/healthcheck.py
+      test: curl --fail -k -s https://localhost:8889/roku/health || exit 1
       interval: 1m
       timeout: 10s
       retries: 2
