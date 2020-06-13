@@ -6,6 +6,7 @@ RUN apk add --no-cache py3-pip tzdata libxml2-dev libxslt-dev gcc musl-dev pytho
 COPY ./my-rokus.txt /usr/src/app/
 COPY ./roku-apps.xml /usr/src/app/
 COPY ./roku-remote-rest-server.py /usr/src/app/
+COPY ./healthcheck.py /usr/src/app/
 
 RUN chmod +x /usr/src/app/roku-remote-rest-server.py
 
