@@ -28,8 +28,8 @@ This will allow your server to restart the running pods on a server restart or i
 
 Now you can use systemctl --user calls to enable, start, stop or view the status of your pod
 
-`systemctl --user enable container-roku-remote.service
-systemctl --user start container-roku-remote.service`
+`systemctl --user enable container-roku-remote.service`
+`systemctl --user start container-roku-remote.service`
 
 ## REST Call
 When running you can make calls to the rest server
