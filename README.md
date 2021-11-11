@@ -11,26 +11,27 @@ Two python scripts.
     * FIREWALLS WILL BLOCK THE DISCOVER SCRIPT
   * `roku-remote-rest-server.py` takes https requests to control a listed roku device.
 
-You must create a docker secret, AUTHKEY, before running. AUTHKEY is your username:password base64 encrypted
- * `printf "place-your-AUTHKEY-here" | docker secret create AUTHKEY -`
+You must create a podman secret, AUTHKEY, before running. AUTHKEY is your username:password base64 encrypted
+ * `printf <secret> | podman secret create AUTHKEY -`
+ * `printf <secret> | docker secret create AUTHKEY -`
 
 The script needs a certfile (fullchain.pem) and a keyfile (privkey.pem) to secure the socket. I use letsencrypt and create a volume to the certs folder and I use an ENV variable CERTPATH to provide the remaining path.
  
 To build the container image from the main folder
+ * `podman build -t roku-remote-rest-server -f ./Dockerfile`
  * `docker build . -t roku-remote-rest-server`
  
-To deploy to docker swarm from the main folder
- * `docker stack deploy --compose-file docker-compose.yaml roku-remote-rest-service`
+To deploy
+ * `podman run -d -e CERTPATH='live/<SERVER NAME>' -e TZ='US/Eastern' --secret AUTHKEY -p 8889:8889 -v <LETSENCRYPT FOLDER>:/usr/src/app/certs/:z --healthcheck-command 'curl --fail -k -s https://localhost:8889/roku/health || exit 1' --label "io.containers.autoupdate=image" --name roku-remote roku-remote-rest-server`
  
 When running you can make calls to the rest server
- * `https://your-server-name:8889/roku/roku-name commands-list`
+ * `https://<SERVER NAME>:8889/roku/<ROKU-NAME> <COMMANDS>`
  
-Command List
- * search $ - opens a roku search for $
- * open or launch $ - launches the app $ which must be listed in the roku-apps.xml
- * volume [up|down] - should raise or lower the volume, still having issues with this one
- * home, select, left, right, down, up, back, info, reverse or rewind, forward, play or pause, replay - which correspond to a button on the roku remote. These can be chained together in one request for example, right right down select
+Commands
+ * search <x> - opens a roku search for <x>
+ * open <x> or launch <x> - launches the app <x> which must be listed in the roku-apps.xml
+ * home, select, left, right, down, up, back, info, reverse, rewind, forward, play, pause, replay - which correspond to a button on the roku remote. These can be chained together in one request for example, `right right down select`
  
 Examples
- * You can use postman to test but you must have a header with KEY: "Authorization" and VALUE: "Basic Base64-encoded-username:password". Your request would be GET https://your-server-ip-or-name:8889/roku/office pause 
- * IFTTT webhook url would be https://username:password@your-server-ip-or-name:8889/roku/{{TextField}}. I have it connected to Google Assistant - Say a phrase with a text ingredient and for What do you want to say? I have Roku $
+ * You can use postman to test but you must have a header with KEY: "Authorization" and VALUE: "Basic Base64-encoded-username:password". Your request would be GET https://<SERVER NAME>:8889/roku/office right right down select 
+ * IFTTT webhook url would be https://username:password@<SERVER NAME>:8889/roku/{{TextField}}. I have it connected to Google Assistant where I can say a phrase with a text ingredient and for What do you want to say? I have Roku $
