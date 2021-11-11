@@ -8,7 +8,7 @@
   * `roku-finder.py` Finds rokus on your network (FIREWALLS WILL BLOCK THE DISCOVER SCRIPT) and writes the list to my-rokus.txt and creates an xml list of apps found on one of the rokus called roku-apps.xml.
     * `my-rokus.txt` - a dict of the rokus on the network, their names and their IP addresses
     * `roku-apps.xml` - an xml output of a roku's installed apps which allows a user to launch an app listed
-    * `roku-remote-rest-server.py` - takes https requests to control a listed roku device.
+  * `roku-remote-rest-server.py` - takes https requests to control a listed roku device.
 
 ## Create Secret
 You must create a podman secret, AUTHKEY, before running. AUTHKEY is your username:password base64 encrypted
