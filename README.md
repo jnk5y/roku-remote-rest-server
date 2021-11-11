@@ -21,6 +21,13 @@ The script needs a certfile (fullchain.pem) and a keyfile (privkey.pem) to secur
 ## Deploy
  * `podman run -d -e CERTPATH='live/<SERVER NAME>' -e TZ='US/Eastern' --secret AUTHKEY -p 8889:8889 -v <LETSENCRYPT FOLDER>:/usr/src/app/certs/:z --healthcheck-command 'curl --fail -k -s https://localhost:8889/roku/health || exit 1' --label "io.containers.autoupdate=image" --name roku-remote roku-remote-rest-server`
 
+## Systemd Connection
+This will allow your server to restart the running pods on a server restart or if they are stopped.
+`podman generate systemd --new --name roku-remote | sudo tee ~/.config/systemd/user/container-roku-remote.service >/dev/null`
+Now you can use systemctl --user calls to enable, start, stop or view the status of your pod
+`systemctl --user enable container-roku-remote.service
+systemctl --user start container-roku-remote.service`
+
 ## REST Call
 When running you can make calls to the rest server
  * `https://<SERVER NAME>:8889/roku/<ROKU-NAME> <COMMANDS>`
