@@ -23,10 +23,13 @@ The script needs a certfile (fullchain.pem) and a keyfile (privkey.pem) to secur
 
 ## Systemd Connection
 This will allow your server to restart the running pods on a server restart or if they are stopped.
- * `podman generate systemd --new --name roku-remote | sudo tee ~/.config/systemd/user/container-roku-remote.service >/dev/null`
+
+`podman generate systemd --new --name roku-remote | sudo tee ~/.config/systemd/user/container-roku-remote.service >/dev/null`
+
 Now you can use systemctl --user calls to enable, start, stop or view the status of your pod
- * `systemctl --user enable container-roku-remote.service
- * systemctl --user start container-roku-remote.service`
+
+`systemctl --user enable container-roku-remote.service
+systemctl --user start container-roku-remote.service`
 
 ## REST Call
 When running you can make calls to the rest server
