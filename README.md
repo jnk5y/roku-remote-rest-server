@@ -1,7 +1,3 @@
-[![Build Status](https://travis-ci.com/jnk5y/roku-remote-rest-server.svg?branch=master)](https://travis-ci.com/jnk5y/roku-remote-rest-server)
-[![Docker Stars](https://img.shields.io/docker/stars/jnk5y/roku-remote-rest-server.svg)](https://hub.docker.com/r/jnk5y/shepherd/)
-[![Docker Pulls](https://img.shields.io/docker/pulls/jnk5y/roku-remote-rest-server.svg)](https://hub.docker.com/r/jnk5y/roku-remote-rest-server/)
-
 # roku-remote-rest-server
 
 ## File Descriptions
