@@ -31,5 +31,5 @@ When running you can make calls to the rest server
  * home, select, left, right, down, up, back, info, reverse, rewind, forward, play, pause, replay - which correspond to a button on the roku remote. These can be chained together in one request for example, `right right down select`
 
 ### Examples
- * You can use postman to test but you must have a header with KEY: "Authorization" and VALUE: "Basic Base64-encoded-username:password". Your request would be GET https://<SERVER NAME>:8889/roku/office right right down select 
+ * You can use postman to test but you must have a header with KEY: "Authorization" and VALUE: "Basic Base64-encoded-username:password". Your request would be a GET `https://<SERVER NAME>:8889/roku/office right right down select`
  * IFTTT webhook url would be `https://username:password@<SERVER NAME>:8889/roku/{{TextField}}`. I have it connected to Google Assistant where I can say a phrase with a text ingredient and for What do you want to say? I have `Roku $`
